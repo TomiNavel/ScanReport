@@ -1,0 +1,69 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>DNS Lookup</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li><strong>Direcciones IP (A):</strong>
+                {% if service_result.data|get_value:"Direcciones IP (A)" != "No disponible" %}
+                    <ul class="data-list">
+                        {% for ip in service_result.data|get_value:"Direcciones IP (A)" %}
+                            <li>{{ ip }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <span class="no-data-message">No disponible</span>
+                {% endif %}
+            </li>
+
+            <li><strong>Servidores de correo (MX):</strong>
+                {% if service_result.data|get_value:"Servidores de correo (MX)" != "No disponible" %}
+                    <ul class="data-list">
+                        {% for mx in service_result.data|get_value:"Servidores de correo (MX)" %}
+                            <li>{{ mx }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <span class="no-data-message">No disponible</span>
+                {% endif %}
+            </li>
+
+            <li><strong>Servidores de nombres (NS):</strong>
+                {% if service_result.data|get_value:"Servidores de nombres (NS)" != "No disponible" %}
+                    <ul class="data-list">
+                        {% for ns in service_result.data|get_value:"Servidores de nombres (NS)" %}
+                            <li>{{ ns }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <span class="no-data-message">No disponible</span>
+                {% endif %}
+            </li>
+
+            <li><strong>Alias (CNAME):</strong>
+                {% if service_result.data|get_value:"Alias (CNAME)" != "No disponible" %}
+                    <ul class="data-list">
+                        {% for cname in service_result.data|get_value:"Alias (CNAME)" %}
+                            <li>{{ cname }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <span class="no-data-message">No disponible</span>
+                {% endif %}
+            </li>
+
+            <li><strong>Registros TXT:</strong>
+                {% if service_result.data|get_value:"Registros TXT" != "No disponible" %}
+                    <ul class="data-list">
+                        {% for txt in service_result.data|get_value:"Registros TXT" %}
+                            <li>{{ txt }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <span class="no-data-message">No disponible</span>
+                {% endif %}
+            </li>
+        {% else %}
+            <li class="error-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>

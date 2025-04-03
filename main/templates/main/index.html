@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dict_key %}
+{% block title %}ScanReport{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block content %}
+<div>
+    <br>
+    <!-- Busqueda Dominio -->
+    <div class="search-section">
+        <span class="titulo-seleccion">Búsqueda por Dominio</span>
+        <form action="{% url 'main:url' %}" method="POST" class="show-loading">
+            {% csrf_token %}
+            <select name="protocol" class="protocol-select">
+                <option value="http://">http://</option>
+                <option value="https://" selected>https://</option>
+            </select>
+            <input type="text" name="dominio" placeholder="Dominio (www.google.com)" value="{{ url }}">
+            <button type="submit" class="button">Seleccionar</button>
+        </form>
+    </div>
+    <br>
+    <!-- Busqueda IP -->
+    <div class="search-section">
+        <span class="titulo-seleccion">Búsqueda por IP</span>
+        <form action="{% url 'main:ip' %}" method="POST" class="show-loading">
+            {% csrf_token %}
+            <input type="text" name="ip" placeholder="IP (127.0.0.1)" value="{{ ip }}">
+            <button type="submit" class="button">Seleccionar</button>
+        </form>
+    </div>
+
+    <!-- Mensaje de carga y spinner-->
+    <div id="loading-container" style="display: none;">
+        <p id="loading-message">Cargando datos...</p>
+        <div class="spinner"></div>
+    </div>
+    <!-- Mensaje de error -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message error-message">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <!-- Enlace descarga -->
+    {% if pdf_url %}
+    <div class="download-link">
+        <p>{{ service_result }}</p>
+        <a href="{{ pdf_url }}" download>Descargar Informe PDF</a>
+    </div>
+    {% endif %}
+
+
+    <!-- Servicios e informes -->
+    <div class="servicios-informes">
+
+        {% if dominio %}
+        <!-- Titulo seleccion -->
+        <div class="titulo-seleccion">
+            <span class="titulo">Dominio Seleccionado:</span><br>
+            <span class="seleccion">{{ dominio }}</span>
+        </div>
+
+        <!-- Sección de Informes -->
+        <div class="button-container">
+            <!-- Botones informes dominios -->
+            <form action="{% url 'reports:generar_pdf_whatweb' %}" method="POST"
+                  class="informes-form show-loading" data-message="Generando informe...">
+                {% csrf_token %}
+                <input type="hidden" name="dominio" value="{{ dominio }}">
+                <button type="submit" class="informes-button">Crear Informe Web</button>
+            </form>
+            <form action="{% url 'reports:generar_pdf_wpscan' %}" method="POST"
+                  class="informes-form show-loading" data-message="Generando informe...">
+                {% csrf_token %}
+                <input type="hidden" name="protocol" value="{{ protocol }}">
+                <input type="hidden" name="dominio" value="{{ dominio }}">
+                <button type="submit" class="informes-button">Crear Informe WordPress</button>
+            </form>
+        </div>
+
+        <!-- Sección de Servicios -->
+        <div class="button-container">
+            <!-- Botones servicios dominios -->
+            {% for servicio, url_name in servicios_dominio.items %}
+            <form action="{% url url_name %}" method="POST" class="show-loading" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="dominio" value="{{ dominio }}">
+                <button type="submit" class="service-button">{{ servicio }}</button>
+            </form>
+            {% endfor %}
+        </div>
+
+
+        {% elif ip %}
+        <!-- Titulo seleccion -->
+        <div class="titulo-seleccion">
+            <span class="titulo">IP Seleccionada:</span><br>
+            <span class="seleccion">{{ ip }}</span>
+        </div>
+
+        <!-- Sección de Informes para IP -->
+        <div class="button-container">
+            <!-- Botones informes IP -->
+            <form action="{% url 'reports:generar_pdf_shodan' %}" method="POST"
+                  class="informes-form show-loading" data-message="Generando informe...">
+                {% csrf_token %}
+                <input type="hidden" name="query" value="{{ ip }}">
+                <button type="submit" class="informes-button">Crear Informe IP</button>
+            </form>
+        </div>
+
+        <!-- Sección de Servicios para IP -->
+        <div class="button-container">
+            <!-- Botones servicios IP -->
+            {% for servicio, url_name in servicios_ip.items %}
+            <form action="{% url url_name %}" method="POST" class="show-loading" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="ip" value="{{ ip }}">
+                <button type="submit" class="service-button">{{ servicio }}</button>
+            </form>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Contenedor para mostrar los resultados de los servicios -->
+        <div>
+            <!-- Mostrar el resultado servicios Dominio -->
+            {% if service_name == "http_status" %}
+            {% include "parciales/http_status.html" %}
+            {% elif service_name == "dns_lookup" %}
+            {% include "parciales/dns_lookup.html" %}
+            {% elif service_name == "verificar_lista_negra" %}
+            {% include "parciales/verificar_lista_negra.html" %}
+            {% elif service_name == "tiempo_respuesta" %}
+            {% include "parciales/tiempo_respuesta.html" %}
+            {% elif service_name == "certificado_ssl" %}
+            {% include "parciales/certificado_ssl.html" %}
+            {% elif service_name == "ip_dominio" %}
+            {% include "parciales/ip_dominio.html" %}
+            {% elif service_name == "whois_dominio" %}
+            {% include "parciales/whois_dominio.html" %}
+            <!-- Mostrar el resultado servicios IP-->
+            {% elif service_name == "ping_ip" %}
+            {% include "parciales/ping_ip.html" %}
+            {% elif service_name == "geo_ip" %}
+            {% include "parciales/geo_ip.html" %}
+            {% elif service_name == "reverse_ip" %}
+            {% include "parciales/reverse_ip.html" %}
+            {% elif service_name == "blacklist_ip" %}
+            {% include "parciales/blacklist_ip.html" %}
+            {% elif service_name == "whois_ip" %}
+            {% include "parciales/whois_ip.html" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Script para mensaje cargando... -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var forms = document.querySelectorAll("form.show-loading");
+
+        forms.forEach(function(form) {
+            form.addEventListener("submit", function() {
+                var loadingMessage = document.getElementById("loading-container");
+                if (loadingMessage) {
+                    var customMessage = form.getAttribute("data-message") || "Cargando datos...";
+                    document.getElementById("loading-message").innerText = customMessage;
+                    loadingMessage.style.display = "block";
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Script para ocultar mensajes -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Seleccionar todos los elementos con la clase "message"
+        var messages = document.querySelectorAll(".message");
+
+        // Si hay mensajes, aplicar el temporizador para ocultarlos
+        if (messages.length > 0) {
+            setTimeout(function() {
+                messages.forEach(function(message) {
+                    message.style.display = "none";
+                });
+            }, 4000); // 5000 ms = 5 segundos
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+<!-- informe_servicios_ip.html -->
+{% extends 'base.html' %}
+
+{% block title %}Informe de la IP - ScanReport{% endblock %}
+
+{% block content %}
+<div class="informe-page">
+    <div class="informe-button-container">
+        <button onclick="history.back()" class="informe-button">Volver</button>
+        <a href="{% url 'main:index' %}" class="informe-button">Nueva búsqueda</a>
+        <form action="{% url 'reports:generar_informe_ip_word' %}" method="POST" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="query" value="{{ query }}">
+            <button type="submit" class="informe-button informe-button-generate">Generar Word</button>
+        </form>
+    </div>
+
+    <div class="informe-titulo">
+        <span class="informe-titulo-seleccion">Resultados para la IP: {{ query }}</span>
+    </div>
+
+    <div class="resultados-servicios">
+        {% for service_name, service_data in resultados.items %}
+        <div class="informe-servicio-container">
+            {% if service_name == "Ping" %}
+            {% include "parciales/ping_ip.html" with service_result=service_data %}
+            {% elif service_name == "Geolocalización" %}
+            {% include "parciales/geo_ip.html" with service_result=service_data %}
+            {% elif service_name == "Reverse IP" %}
+            {% include "parciales/reverse_ip.html" with service_result=service_data %}
+            {% elif service_name == "Lista Negra" %}
+            {% include "parciales/blacklist_ip.html" with service_result=service_data %}
+            {% elif service_name == "WHOIS IP" %}
+            {% include "parciales/whois_ip.html" with service_result=service_data %}
+            {% endif %}
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

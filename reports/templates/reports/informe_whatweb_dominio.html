@@ -1,0 +1,90 @@
+<!-- informe_whatweb_dominio.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Informe del Dominio - ScanReport{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/informe.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="informe-page">
+
+    <!-- Cabecera del informe con el logo, título y disclaimer -->
+    <div class="informe-header">
+        <img src="{{ logo_url }}" alt="Logo de la Empresa" class="informe-logo">
+        <h1>Informe Preliminar de Seguridad Web</h1>
+        <p class="informe-subtitulo">Generado para el dominio: {{ reports.0.url }}</p>
+        <p class="disclaimer">
+            Este informe es generado con fines informativos y de seguridad. Los datos aquí recopilados se obtienen de
+            fuentes públicas y están destinados a ayudar a identificar configuraciones de red y servicios expuestos. No
+            se garantiza la exactitud total de los resultados ni se debe hacer uso de estos datos para acciones no
+            autorizadas.
+        </p>
+    </div>
+
+    <!-- Índice de contenidos -->
+    <div class="indice">
+        <h1>Índice</h1>
+        <ul>
+            <li><a href="#informacion-general">Información General</a></li>
+            <li><a href="#tecnologias-detectadas">Tecnologías y Características Detectadas</a></li>
+            <li><a href="#informacion-detallada">Información Detallada</a></li>
+            <li><a href="#encabezados-http">Encabezados HTTP</a></li>
+            <li><a href="#contacto">Información de Contacto</a></li>
+        </ul>
+    </div>
+
+    {% for report in reports %}
+    <div class="informe-titulo" id="informacion-general">
+        <h2>Informe web para el dominio: {{ report.url }}</h2>
+
+        <h3>Información General</h3>
+        <div class="informe-seccion">
+            <p><strong>Estado HTTP:</strong> {{ report.status }}</p>
+            <p><strong>Título:</strong> {{ report.title }}</p>
+            <p><strong>IP:</strong> {{ report.ip }}</p>
+            <p><strong>País:</strong> {{ report.country }}</p>
+        </div>
+
+        <h3 id="tecnologias-detectadas">Tecnologías y Características Detectadas</h3>
+        <div class="informe-seccion">
+            <ul>
+                {% for item in report.summary %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <h3 id="informacion-detallada">Información Detallada</h3>
+        <div class="informe-seccion">
+            <ul>
+                {% for plugin in report.detected_plugins %}
+                <li class="informe-subseccion">
+                    <strong>{{ plugin.name }}</strong>
+                    <pre>{{ plugin.details }}</pre>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <h3 id="encabezados-http">Encabezados HTTP</h3>
+        <div class="informe-seccion">
+            <pre>{{ report.http_headers }}</pre>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Pie de página del informe -->
+    <div id="contacto" class="informe-footer">
+        <p>Informe generado por ScanReport - {{ current_date }}</p>
+        <p>Para cualquier duda o comentario sobre los datos mostrados en este informe, no dude en contactarnos.</p>
+        <p>Todos los derechos reservados © {{ company_name }}</p>
+        <p>
+            C/ La Lila 5<br>
+            33002 Oviedo – Asturias<br>
+            Tlfn: 985 08 45 56<br>
+            Email: <a href="mailto:contacto@tesa46ti.com">contacto@tesa46ti.com</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

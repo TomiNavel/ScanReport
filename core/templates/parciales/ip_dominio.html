@@ -1,0 +1,13 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>Obtener IP</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" and service_result.data|get_value:"Direcciones IP" %}
+            {% for ip in service_result.data|get_value:"Direcciones IP"|split:", " %}
+                <li>{{ ip }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No disponible</li>
+        {% endif %}
+    </ul>
+</div>

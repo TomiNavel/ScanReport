@@ -1,0 +1,31 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>WHOIS Dominio</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li><strong>Dominio:</strong> {{ service_result.data|get_value:"Dominio" }}</li>
+            <li><strong>Servidor WHOIS:</strong> {{ service_result.data|get_value:"Servidor WHOIS" }}</li>
+            <li><strong>Fecha de Creación:</strong> {{ service_result.data|get_value:"Fecha de Creación" }}</li>
+            <li><strong>Fecha de Expiración:</strong> {{ service_result.data|get_value:"Fecha de Expiración" }}</li>
+            <li><strong>Estado:</strong>
+                {% if service_result.data|get_value:"Estado" != "No disponible" %}
+                    {{ service_result.data|get_value:"Estado" }}
+                {% else %}
+                    No disponible
+                {% endif %}
+            </li>
+            <li><strong>Contactos Registrantes:</strong> {{ service_result.data|get_value:"Contactos Registrantes" }}</li>
+            <li><strong>Emails:</strong>
+                {% if service_result.data|get_value:"Emails" != "No disponible" %}
+                    {{ service_result.data|get_value:"Emails" }}
+                {% else %}
+                    No disponible
+                {% endif %}
+            </li>
+            <li><strong>Organización:</strong> {{ service_result.data|get_value:"Organización" }}</li>
+            <li><strong>País:</strong> {{ service_result.data|get_value:"País" }}</li>
+        {% else %}
+            <li class="error-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>

@@ -1,0 +1,26 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>Certificado SSL</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li><strong>Emitido por:</strong> {{ service_result.data.emitido_por }}</li>
+            <li><strong>Válido desde:</strong>
+                {% if service_result.data.valido_desde != "No disponible" %}
+                    {{ service_result.data.valido_desde }}
+                {% else %}
+                    No disponible
+                {% endif %}
+            </li>
+            <li><strong>Válido hasta:</strong>
+                {% if service_result.data.valido_hasta != "No disponible" %}
+                    {{ service_result.data.valido_hasta }}
+                {% else %}
+                    No disponible
+                {% endif %}
+            </li>
+            <li><strong>Sujeto:</strong> {{ service_result.data.sujeto }}</li>
+        {% else %}
+            <li class="no-data-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>

@@ -1,0 +1,13 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>Latencia</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li><strong>Dominio:</strong> {{ service_result.data|get_value:"Dominio" }}</li>
+            <li><strong>IP:</strong> {{ service_result.data|get_value:"IP" }}</li>
+            <li><strong>Latencia:</strong> {{ service_result.data|get_value:"Latencia" }}</li>
+        {% else %}
+            <li class="error-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>

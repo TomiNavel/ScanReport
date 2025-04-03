@@ -1,0 +1,37 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>WHOIS IP</h3>
+
+    <!-- Sección de ASN Info -->
+    {% if service_result.data|get_value:"ASN Info" %}
+        <div class="section-header">ASN Info</div>
+        <ul class="data-list">
+            <li><strong>ASN:</strong> {{ service_result.data|get_value:"ASN Info"|get_value:"ASN" }}</li>
+            <li><strong>Descripción ASN:</strong> {{ service_result.data|get_value:"ASN Info"|get_value:"Descripción ASN" }}</li>
+            <li><strong>País ASN:</strong> {{ service_result.data|get_value:"ASN Info"|get_value:"País ASN" }}</li>
+            <li><strong>Rango ASN:</strong> {{ service_result.data|get_value:"ASN Info"|get_value:"Rango ASN" }}</li>
+            <li><strong>Fecha ASN:</strong> {{ service_result.data|get_value:"ASN Info"|get_value:"Fecha ASN" }}</li>
+        </ul>
+    {% else %}
+        <p class="no-data-message">No se encontraron datos de ASN para esta IP.</p>
+    {% endif %}
+
+    <!-- Sección de Redes -->
+    {% if service_result.data|get_value:"Redes"|length > 0 %}
+        <div class="section-header">Redes</div>
+        {% for red in service_result.data|get_value:"Redes" %}
+            <ul class="data-list">
+                <li><strong>Rango IP:</strong> {{ red|get_value:"Rango IP" }}</li>
+                <li><strong>Organización:</strong> {{ red|get_value:"Organización" }}</li>
+                <li><strong>País:</strong> {{ red|get_value:"País" }}</li>
+                <li><strong>Ciudad:</strong> {{ red|get_value:"Ciudad" }}</li>
+                <li><strong>Dirección:</strong> {{ red|get_value:"Dirección" }}</li>
+                <li><strong>Creado:</strong> {{ red|get_value:"Creado" }}</li>
+                <li><strong>Actualizado:</strong> {{ red|get_value:"Actualizado" }}</li>
+            </ul>
+            {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+    {% else %}
+        <p class="no-data-message">No se encontraron redes asociadas a esta IP.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,34 @@
+# Archivos ignorados por defecto de JetBrains
+/shelf/
+/workspace.xml
+
+# Archivos Python compilados automáticamente
+__pycache__/
+*.py[cod]  # *.pyc, *.pyo, *.pyd
+
+# Entornos virtuales
+env/
+venv/
+
+# Archivos específicos de Django
+*.sqlite3        
+*.env            
+db.sqlite3       
+
+# Archivos recolectados por 'collectstatic' para producción
+/staticfiles/
+core/staticfiles/
+staticfiles/
+
+# Archivos subidos por usuarios o generados, como PDFs
+media/
+
+# Configuraciones del entorno de desarrollo
+.vscode/
+.idea/
+
+# Archivos de logs
+*.log
+
+# Configuración sensible 
+core/settings.py

@@ -1,0 +1,11 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>Verificación Lista Negra</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li>{{ service_result.data|get_value:"Resultado" }}</li>
+        {% else %}
+            <li class="error-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>

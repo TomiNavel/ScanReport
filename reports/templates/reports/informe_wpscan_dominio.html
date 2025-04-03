@@ -1,0 +1,135 @@
+<!-- informe_wpscan.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Informe Preliminar de Seguridad para WordPress - ScanReport{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/informe_web.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="informe-page">
+
+    <!-- Cabecera del informe con el logo, título y disclaimer -->
+    <div class="informe-header">
+        <img src="{{ logo_url }}" alt="Logo de la Empresa" class="informe-logo">
+        <h1>Informe de Seguridad de WordPress</h1>
+        <p class="informe-subtitulo">Generado para el sitio: {{ url }}</p>
+        <p class="disclaimer">
+            Este informe es generado con fines informativos y de seguridad. Los datos aquí recopilados se obtienen de
+            fuentes públicas y están destinados a ayudar a identificar vulnerabilidades potenciales en instalaciones de
+            WordPress.
+            No se garantiza la exactitud total de los resultados ni se debe hacer uso de estos datos para acciones no
+            autorizadas.
+        </p>
+    </div>
+
+    <!-- Índice de contenidos -->
+    <div class="indice">
+        <h1>Índice</h1>
+        <ul>
+            <li><a href="#informacion-general">Información General</a></li>
+            <li><a href="#plugins-detectados">Plugins Detectados</a></li>
+            <li><a href="#temas-detectados">Tema Principal Detectado</a></li>
+            <li><a href="#vulnerabilidades">Vulnerabilidades Encontradas</a></li>
+            <li><a href="#hallazgos-interesantes">Hallazgos Interesantes</a></li>
+            <li><a href="#contacto">Información de Contacto</a></li>
+        </ul>
+    </div>
+
+    <!-- Información General -->
+    <div class="informe-titulo" id="informacion-general">
+        <h2>Informe de seguridad para el sitio: {{ reports.target_url }}</h2>
+        <h3>Información General</h3>
+        <div class="informe-seccion">
+            <p><strong>Dirección IP del sitio:</strong> {{ reports.target_ip }}</p>
+            <p><strong>Versión de WordPress:</strong> {{ reports.version.number }}</p>
+            <p><strong>Fecha de Lanzamiento:</strong> {{ reports.version.release_date }}</p>
+            <p><strong>Estado:</strong> {{ reports.version.status }}</p>
+        </div>
+
+        <!-- Plugins Detectados -->
+        <h3 id="plugins-detectados">Plugins Detectados</h3>
+        <div class="informe-seccion">
+            {% if reports.plugins %}
+            <ul>
+                {% for plugin in reports.plugins %}
+                <li>
+                    <strong>{{ plugin.name }}</strong> - Última versión: {{ plugin.latest_version }}
+                    <p>Ubicación: {{ plugin.location }}</p>
+                    <p>Actualizado: {{ plugin.last_updated }}</p>
+                    <p>Confianza: {{ plugin.confidence }}%</p>
+                    <p>Versión detectada: {{ plugin.version }}</p>
+                    {% if plugin.outdated %}
+                    <p class="alerta">{{ plugin.alert }}</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No se encontraron plugins.</p>
+            {% endif %}
+        </div>
+
+        <!-- Tema Principal Detectado -->
+        <h3 id="temas-detectados">Tema Principal Detectado</h3>
+        <div class="informe-seccion">
+            {% if reports.main_theme %}
+            <p><strong>Nombre del Tema:</strong> {{ reports.main_theme.style_name }}</p>
+            <p>Ubicación: {{ reports.main_theme.location }}</p>
+            <p>Versión: {{ reports.main_theme.version.number }}</p>
+            {% else %}
+            <p>No se encontró un tema principal.</p>
+            {% endif %}
+        </div>
+
+        <!-- Vulnerabilidades Encontradas -->
+        <h3 id="vulnerabilidades">Vulnerabilidades Encontradas</h3>
+        <div class="informe-seccion">
+            {% if reports.vulnerabilities %}
+            <ul>
+                {% for vulnerability in reports.vulnerabilities %}
+                <li>
+                    <p><strong>{{ vulnerability.title }}</strong></p>
+                    <pre>{{ vulnerability.description }}</pre>
+                    <p><strong>Gravedad:</strong> {{ vulnerability.severity }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Es necesaria API para detectar vulnerabilidades</p>
+            {% endif %}
+        </div>
+
+        <!-- Hallazgos Interesantes -->
+        <h3 id="hallazgos-interesantes">Hallazgos Interesantes</h3>
+        <div class="informe-seccion">
+            {% if reports.interesting_findings %}
+            <ul>
+                {% for finding in reports.interesting_findings %}
+                <li>
+                    <p><strong>{{ finding.to_s }}</strong></p>
+                    <p>Ubicación: {{ finding.url }}</p>
+                    <p>Confianza: {{ finding.confidence }}%</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No se encontraron hallazgos interesantes.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Pie de página del informe -->
+    <div id="contacto" class="informe-footer">
+        <p>Informe generado por ScanReport - {{ current_date }}</p>
+        <p>Para cualquier duda o comentario sobre los datos mostrados en este informe, no dude en contactarnos.</p>
+        <p>Todos los derechos reservados © {{ company_name }}</p>
+        <p>
+            C/ La Lila 5<br>
+            33002 Oviedo – Asturias<br>
+            Tlfn: 985 08 45 56<br>
+            Email: <a href="mailto:contacto@tesa46ti.com">contacto@tesa46ti.com</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

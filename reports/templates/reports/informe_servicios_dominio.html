@@ -1,0 +1,45 @@
+<!-- informe_servicios_dominio.html -->
+{% extends 'base.html' %}
+
+{% block title %}Informe del Dominio - ScanReport{% endblock %}
+
+{% block content %}
+
+<div class="informe-page">
+<div class="informe-button-container">
+    <button onclick="history.back()" class="informe-button">Volver</button>
+    <a href="{% url 'main:index' %}" class="informe-button">Nueva búsqueda</a>
+    <form action="{% url 'reports:generar_informe_dominio_word' %}" method="POST" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="query" value="{{ query }}">
+        <button type="submit" class="informe-button informe-button-generate">Generar Word</button>
+    </form>
+</div>
+
+    <div class="informe-titulo">
+        <span class="informe-titulo-seleccion">Resultados para el dominio: {{ query }}</span>
+    </div>
+
+    <div class="resultados-servicios">
+       {% for service_name, service_data in resultados.items %}
+            <div class="informe-servicio-container">
+                {% if service_name == "http_status" %}
+                    {% include "parciales/http_status.html" with service_result=service_data %}
+                {% elif service_name == "dns_lookup" %}
+                    {% include "parciales/dns_lookup.html" with service_result=service_data %}
+                {% elif service_name == "verificar_lista_negra" %}
+                    {% include "parciales/verificar_lista_negra.html" with service_result=service_data %}
+                {% elif service_name == "tiempo_respuesta" %}
+                    {% include "parciales/tiempo_respuesta.html" with service_result=service_data %}
+                {% elif service_name == "certificado_ssl" %}
+                    {% include "parciales/certificado_ssl.html" with service_result=service_data %}
+                {% elif service_name == "ip_dominio" %}
+                    {% include "parciales/ip_dominio.html" with service_result=service_data %}
+                {% elif service_name == "whois_dominio" %}
+                    {% include "parciales/whois_dominio.html" with service_result=service_data.data %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

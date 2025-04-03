@@ -1,0 +1,175 @@
+<!-- informe_shodan_ip.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Informe de Seguridad IP - ScanReport{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/informe.css' %}">
+{% endblock %}
+{% block content %}
+<div class="informe-page">
+
+    <!-- Cabecera del informe con el logo, título y disclaimer -->
+    <div class="informe-header">
+        <img src="{{ logo_url }}" alt="Logo de la Empresa" class="informe-logo">
+        <h1>Informe Preliminar de Seguridad IP</h1>
+        <p class="informe-subtitulo">Generado para la IP: {{ query }}</p>
+        <p class="disclaimer">
+            Este informe es generado con fines informativos y de seguridad. Los datos aquí recopilados se obtienen de
+            fuentes públicas y están destinados a ayudar a identificar configuraciones de red y servicios expuestos. No
+            se garantiza la exactitud total de los resultados ni se debe hacer uso de estos datos para acciones no
+            autorizadas.
+        </p>
+    </div>
+
+    <!-- Índice de contenidos -->
+    <div class="indice">
+        <h2>Índice</h2>
+        <ul>
+            <li><a href="#resumen-ejecutivo">Resumen Ejecutivo</a></li>
+            <li><a href="#informacion-general">Información General del Host</a></li>
+            <li><a href="#puertos-servicios">Puertos y Servicios</a></li>
+            <li><a href="#certificados-ssl">Certificados SSL</a></li>
+            <li><a href="#vulnerabilidades">Vulnerabilidades Detectadas</a></li>
+            <li><a href="#tecnologias">Tecnologías Web Detectadas</a></li>
+            <li><a href="#recomendaciones">Recomendaciones de Seguridad</a></li>
+            <li><a href="#contacto">Información de Contacto</a></li>
+        </ul>
+    </div>
+
+    <!-- Resumen Ejecutivo -->
+    <div id="resumen-ejecutivo" class="informe-seccion resumen-ejecutivo">
+        <h2>Resumen Ejecutivo</h2>
+        <ul>
+            <li><strong>Puertos Abiertos(Id):</strong> {{ datos_ip.puertos_abiertos|join:", " }}</li>
+            <li><strong>Número de Vulnerabilidades:</strong> {{ datos_ip.vulnerabilidades|length }}</li>
+            <li><strong>Tecnologías Detectadas:</strong> {{ datos_ip.tecnologias_web|join:", " }}</li>
+        </ul>
+    </div>
+
+    {% if error %}
+    <div class="error-message">
+        <span>{{ error }}</span>
+    </div>
+    {% else %}
+
+    <!-- Información General -->
+    <div id="informacion-general" class="informe-seccion">
+        <h2>Información General del Host</h2>
+        <ul>
+            <li><strong>IP:</strong> {{ datos_ip.ip_str }}</li>
+            <li><strong>Nombres de Host:</strong> {{ datos_ip.hostnames|join:", " }}</li>
+            <li><strong>ISP:</strong> {{ datos_ip.isp }}</li>
+            <li><strong>Organización:</strong> {{ datos_ip.org }}</li>
+            <li><strong>País:</strong> {{ datos_ip.country_name }}</li>
+            <li><strong>Ciudad:</strong> {{ datos_ip.city }}</li>
+            <li><strong>Región:</strong> {{ datos_ip.region_code }}</li>
+            <li><strong>Latitud:</strong> {{ datos_ip.latitude }}</li>
+            <li><strong>Longitud:</strong> {{ datos_ip.longitude }}</li>
+            <li><strong>Sistema Operativo:</strong> {{ datos_ip.os }}</li>
+            <li><strong>ASN:</strong> {{ datos_ip.asn }}</li>
+        </ul>
+    </div>
+
+    <!-- Puertos y Servicios -->
+    <div id="puertos-servicios" class="informe-seccion">
+        <h2>Puertos y Servicios</h2>
+        <ul>
+            <li><strong>Puertos Abiertos:</strong> {{ datos_ip.puertos_abiertos|join:", " }}</li>
+        </ul>
+
+        <h3>Servicios Detectados</h3>
+        {% for servicio in datos_ip.servicios %}
+        <div class="informe-subseccion">
+            <h4>Puerto {{ servicio.port }}</h4>
+            <ul>
+                <li><strong>Transporte:</strong> {{ servicio.transport }}</li>
+                <li><strong>Producto:</strong> {{ servicio.product }}</li>
+                <li><strong>Versión:</strong> {{ servicio.version }}</li>
+                <li><strong>Banner:</strong> {{ servicio.banner }}</li>
+                <li><strong>CPE:</strong> {{ servicio.cpe|join:", " }}</li>
+                <li><strong>Servidor:</strong> {{ servicio.server }}</li>
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Certificados SSL -->
+    {% if datos_ip.certificados_ssl %}
+    <div id="certificados-ssl" class="informe-seccion">
+        <h2>Certificados SSL</h2>
+        {% for ssl in datos_ip.certificados_ssl %}
+        <ul>
+            <li><strong>Algoritmos de Cifrado:</strong> {{ ssl.algoritmos_cifrado|join:", " }}</li>
+            <li><strong>Autoridad Certificadora:</strong> {{ ssl.autoridad_certificadora }}</li>
+            <li><strong>Fecha de Emisión:</strong> {{ ssl.fecha_emision }}</li>
+            <li><strong>Fecha de Vencimiento:</strong> {{ ssl.fecha_vencimiento }}</li>
+            <li><strong>Cadena de Certificados:</strong> {{ ssl.cadena_certificados }}</li>
+        </ul>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Vulnerabilidades -->
+    {% if datos_ip.vulnerabilidades %}
+    <div id="vulnerabilidades" class="informe-seccion">
+        <h2>Vulnerabilidades Detectadas</h2>
+        <ul>
+            {% for vuln in datos_ip.vulnerabilidades %}
+            <li>
+                <strong>CVE:</strong> {{ vuln.cve }}<br>
+                <strong>Criticidad (CVSS):</strong> {{ vuln.cvss }}<br>
+                <strong>Descripción:</strong> {{ vuln.descripcion }}<br>
+                {% if vuln.referencias %}
+                <strong>Referencias:</strong>
+                <ul>
+                    {% for ref in vuln.referencias %}
+                    <li><a href="{{ ref }}" target="_blank">{{ ref }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Tecnologías Web -->
+    {% if datos_ip.tecnologias_web %}
+    <div id="tecnologias" class="informe-seccion">
+        <h2>Tecnologías Web Detectadas</h2>
+        <ul>
+            {% for tecnologia in datos_ip.tecnologias_web %}
+            <li>{{ tecnologia }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Recomendaciones de Seguridad -->
+    <div id="recomendaciones" class="informe-seccion recomendaciones">
+        <h2>Recomendaciones de Seguridad</h2>
+        <ul>
+            <li>Considere cerrar o proteger puertos abiertos innecesarios.</li>
+            <li>Actualice tecnologías obsoletas para evitar vulnerabilidades conocidas.</li>
+            <li>Revise y actualice certificados SSL próximos a vencer.</li>
+            <li>Remedie las vulnerabilidades críticas detectadas.</li>
+        </ul>
+    </div>
+
+    {% endif %}
+
+    <!-- Pie de página del informe -->
+    <div id="contacto" class="informe-footer">
+        <p>Informe generado por ScanReport - {{ current_date }}</p>
+        <p>Para cualquier duda o comentario sobre los datos mostrados en este informe, no dude en contactarnos.</p>
+        <p>Todos los derechos reservados © {{ company_name }}</p>
+        <p>
+            C/ La Lila 5<br>
+            33002 Oviedo – Asturias<br>
+            Tlfn: 985 08 45 56<br>
+            Email: <a href="mailto:contacto@tesa46ti.com">contacto@tesa46ti.com</a>
+        </p>
+    </div>
+
+</div>
+{% endblock %}

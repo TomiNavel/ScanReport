@@ -1,0 +1,14 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>Geolocalización</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li><strong>Ciudad:</strong> {{ service_result.data|get_value:"Ciudad" }}</li>
+            <li><strong>País:</strong> {{ service_result.data|get_value:"País" }}</li>
+            <li><strong>Latitud:</strong> {{ service_result.data|get_value:"Latitud" }}</li>
+            <li><strong>Longitud:</strong> {{ service_result.data|get_value:"Longitud" }}</li>
+        {% else %}
+            <li class="no-data-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>

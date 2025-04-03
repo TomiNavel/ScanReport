@@ -1,0 +1,162 @@
+
+
+
+/* informe_servicios.css */
+
+/* Estilos generales de la página de informe */
+.informe-page {
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones para el informe */
+.informe-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.informe-button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.informe-button-generate {
+    background-color: #2ecc71;
+}
+
+.informe-button:hover {
+    background-color: #2980b9;
+}
+
+.informe-button-generate:hover {
+    background-color: #27ae60;
+}
+
+/* Título principal del informe */
+.informe-titulo {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.informe-titulo-seleccion {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Estilos para informe_whatweb_dominio */
+
+/* Contenedor general del informe */
+.informe-whatweb-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Botonera superior */
+.informe-whatweb-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+/* Botones del informe */
+.informe-whatweb-button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+}
+
+.informe-whatweb-button-generate {
+    background-color: #2ecc71;
+}
+
+.informe-whatweb-button:hover {
+    background-color: #2980b9;
+}
+
+.informe-whatweb-button-generate:hover {
+    background-color: #27ae60;
+}
+
+/* Secciones del informe */
+.informe-whatweb-titulo h2 {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.informe-whatweb-titulo h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0073e6;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.informe-whatweb-titulo p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.informe-whatweb-titulo ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.informe-whatweb-titulo ul li {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+/* Sección de resumen y detalles */
+.informe-whatweb-resumen {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-left: 5px solid #3498db;
+}
+
+.informe-whatweb-detalles-plugin {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #e8f7ff;
+    border-left: 5px solid #2ecc71;
+}
+
+/* Sección de encabezados HTTP */
+.informe-whatweb-http-headers {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}

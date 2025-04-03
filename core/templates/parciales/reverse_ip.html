@@ -1,0 +1,11 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>Reverse IP</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li>{{ service_result.data|get_value:"Dominio Asociado" }}</li>
+        {% else %}
+            <li class="error-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>

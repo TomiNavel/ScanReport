@@ -1,0 +1,155 @@
+/* informe_web.css */
+
+/* General styling for the report page */
+.informe-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Header styling */
+.informe-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.informe-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.informe-subtitulo {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.disclaimer {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 10px;
+}
+
+/* Table of Contents styling */
+.indice {
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.indice h1 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+}
+
+.indice ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.indice ul li {
+    margin: 8px 0;
+}
+
+.indice ul li a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+.indice ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Section titles */
+.informe-titulo h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-top: 40px;
+    padding-left: 15px;
+    border-left: 5px solid #007BFF;
+    box-shadow: -5px 0 5px -5px rgba(0, 0, 255, 0.2);
+}
+
+.informe-titulo h3 {
+    font-size: 1.3em;
+    color: #0056b3;
+    margin-top: 25px;
+    padding-left: 10px;
+    border-left: 3px solid #0056b3;
+}
+
+/* Content sections */
+.informe-seccion {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f5f7fa;
+    border-radius: 5px;
+    border-left: 5px solid #e0e4e8;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.informe-seccion p,
+.informe-seccion ul {
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+.informe-seccion ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.informe-seccion ul li {
+    margin-bottom: 8px;
+}
+
+.informe-seccion strong {
+    color: #0056b3;
+}
+
+.alerta {
+    color: #b71c1c;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Vulnerabilities styling */
+.informe-seccion pre {
+    background-color: #eef2f7;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 0.95em;
+}
+
+/* Footer styling */
+.informe-footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+.informe-footer a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.informe-footer a:hover {
+    text-decoration: underline;
+}

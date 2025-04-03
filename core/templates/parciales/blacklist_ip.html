@@ -1,0 +1,21 @@
+{% load dict_key %}
+<div class="service-result">
+    <h3>Lista Negra de IP</h3>
+    <ul class="data-list">
+        {% if service_result.status == "success" %}
+            <li>{{ service_result.data|get_value:"Mensaje" }}</li>
+
+            {% if service_result.data|get_value:"Servicios"|length > 0 %}
+                <li><strong>Detectado por:</strong></li>
+                <ul class="data-list">
+                    {% for servicio in service_result.data|get_value:"Servicios" %}
+                        <li>{{ servicio }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+        {% else %}
+            <li class="no-data-message">{{ service_result.message }}</li>
+        {% endif %}
+    </ul>
+</div>
